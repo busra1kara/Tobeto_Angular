@@ -1,0 +1,17 @@
+<table class="table">
+    <thead>
+      <tr>
+        @for(column of columns; track $index){
+            <th>{{column.columnName}}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for(row of rows; track $index){
+        <tr>
+            <td>{{row.rowValue}}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+

@@ -1,0 +1,20 @@
+<app-basic-layout>
+    <div class="d-flex flex-column justify-content-center align-items-center my-3">
+        <h1>Welcome!</h1>
+        <small>Our products are fresh</small> 
+        <!-- a href kullanımı yönlendirmede sayfaların yeniden yüklenmesini sağlar -->
+</div>
+
+<div class="row">
+    <aside class="col-3">
+        <h3>Categories</h3>
+        <app-category-list-group [initialSelectedCategoryId]="selectedCategoryId" (changeSelect)="onChangeCategorySelect($event)"></app-category-list-group>
+    </aside>
+
+    <section class="col">
+        <h3>Products</h3>
+        <app-product-card-list [filterByCategoryId]="selectedCategoryId" (viewProduct)="onViewProduct($event)"></app-product-card-list>
+    </section>
+</div>
+
+</app-basic-layout>

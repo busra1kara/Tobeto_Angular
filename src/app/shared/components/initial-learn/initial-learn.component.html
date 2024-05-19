@@ -1,0 +1,83 @@
+<app-navbar></app-navbar>
+
+<h1>{{ title }}</h1>
+
+*ngIf Directive
+<p *ngIf="cartCount > 1; else cartCountElse">Sepetinizdeki ürün sayısı {{ cartCount }}</p>
+
+<ng-template #cartCountElse>
+    <p *ngIf="cartCount === 1; else noProduct">Sepetinizde yalnızca 1 ürün bulunuyor</p>
+</ng-template>
+
+<ng-template #noProduct>
+    <p>Sepetinizde ürün bulunmuyor</p>
+</ng-template>
+<hr>
+
+<!-- Angular 17 ve Sonrasında -->
+{{'@if Kullanımı'}}
+@if(cartCount > 1){
+    <p>Sepetinizde {{cartCount}} adet ürün bulunuyor</p>
+}
+@else if(cartCount === 1){
+    <p>Sepetinizde yalnızca 1 ürün bulnuyor</p>
+}
+@else {
+    <p>Sepetinizde ürün bulunmuyor</p>
+}
+<hr>
+
+<strong>Ürünler</strong>
+<p>*ngFor Directive</p>
+
+<ul>
+    <ng-container *ngFor="let product of products">
+        <li *ngIf="!product.disContinued">
+            {{product.name}} - {{product.price}}
+        </li>
+    </ng-container>
+</ul>
+<hr>
+
+{{'@For Kullanımı'}}
+<ul>
+@for(product of products; track $index){
+    <li *ngIf="!product.disContinued">
+        {{product.name}} - {{product.price}}
+    </li>
+}
+</ul>
+<hr>
+
+<ul>
+    @for(product of products; track $index){
+        @if(product.disContinued){
+            <li>
+                {{product.name}} - {{product.price}}
+            </li>
+        }
+    }
+</ul>
+
+*ngSwitch Directive
+<ng-container [ngSwitch]="cartCount">
+    <p *ngSwitchCase="0">Sepette ürün bulunmuyor</p>
+    <p *ngSwitchCase="1">Sepette yalnızca 1 ürün bulunuyor</p>
+    <p *ngSwitchDefault>Sepette {{cartCount}} adet ürün bulunuyor</p>
+</ng-container>
+
+{{'@switch Kullanımı'}}
+@switch (cartCount) {
+    @case(0){
+        <p>Sepette ürün bulunmuyor</p>
+    }
+    @case(1){
+        <p>Sepette yalnızca 1 adet ürün bulunuyor</p>
+    }
+    @default {
+        <p>Sepette {{cartCount}} adet ürün bulunuyor</p>
+    }
+}
+
+<button (click)="onAddProductToCart()">Ürün Ekle</button>
+<app-footer></app-footer>

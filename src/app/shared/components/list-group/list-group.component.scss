@@ -1,0 +1,9 @@
+.n-list-group-item{
+    cursor: pointer;
+    &:hover{
+        background-color: #dddddd;
+    };
+    &.active:hover{
+        background-color: #3e8bff;
+    }
+}
