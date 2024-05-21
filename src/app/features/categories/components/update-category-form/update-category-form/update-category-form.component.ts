@@ -3,7 +3,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoriesService } from '../../../services/categories.service';
 import { CategoryListItem } from '../../../models/category-list-item';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UpdatedCategory } from '../../../models/updated-category';
 
 @Component({
   selector: 'app-update-category-form',
@@ -20,8 +21,9 @@ export class UpdateCategoryFormComponent {
   updateCategoryFormGroup!: FormGroup;
   categoryId!: number;
   category!: any;
+  updatedCategory!: UpdatedCategory;
   
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute){}
+  constructor(private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute, private categoryService: CategoriesService){}
 
   ngOnInit(): void {
     this.createForm();
@@ -38,11 +40,39 @@ export class UpdateCategoryFormComponent {
   getFormValue(){
     this.route.params.subscribe(params => {
       this.categoryId = +params['categoryId'];
-      this.category = {
-        id: this.categoryId,
-        name: this.category.name,
-        description: this.category.description
-      };
+      this.categoryService.getCategoryById(this.categoryId).subscribe(category => {
+        this.category = category;
+        this.updateCategoryFormGroup.patchValue({
+          name: this.category.name,
+          description: this.category.description
+        });
+      });
     });
+  };
+
+  update(){
+    this.route.params.subscribe(params => {
+      this.categoryId = +params['categoryId'];
+      this.categoryService.getCategoryById(this.categoryId).subscribe(category => {
+        category.name = this.updateCategoryFormGroup.value.name;
+        category.description = this.updateCategoryFormGroup.value.description;
+        this.updatedCategory = {
+          id: category.id,
+          name: category.name,
+          description: category.description
+        }
+        this.updatedCategoryWithService();
+      })
+    })
+  }
+
+  updatedCategoryWithService(){
+    this.categoryService.update(this.categoryId, this.updatedCategory).subscribe(updatedCategory => {
+      this.router.navigate(['categories', 'tablepage']);
+    })
+  }
+
+  onFormSubmit(){
+    this.update();
   }
 }
