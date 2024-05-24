@@ -1,34 +1,49 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { BasicLayoutComponent } from '../../shared/components/basic-layout/basic-layout.component';
 import { CategoryListGroupComponent } from '../../features/categories/components/category-list-group/category-list-group.component';
 import { ProductCardListComponent } from '../../features/products/components/product-card-list/product-card-list.component';
 import { ProductListItem } from '../../features/products/models/product-list-item';
+import { SharedModule } from '../../shared/shared.module';
+import { IfNotDirective } from '../../shared/directives/if-not.directive';
+
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
   imports: [
-    CommonModule,
+    SharedModule,
+
     RouterModule,
-    BasicLayoutComponent,
+    // BasicLayoutComponent,
     CategoryListGroupComponent,
-    ProductCardListComponent
+    ProductCardListComponent,
+    IfNotDirective
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent implements OnInit {
-  
+    
   selectedCategoryId: number | null = null;
 
-  constructor(private router: Router, private route: ActivatedRoute) {};
+  oldUser: boolean = false;
+
+  constructor(private router: Router, private route: ActivatedRoute, private change: ChangeDetectorRef) {};
 
   ngOnInit(): void {
     this.getProductFiltersFromRoute();
-  };
+    this.detectOldUser();
+  }
+  
+  detectOldUser() {
+    const isOldUser = Boolean(localStorage.getItem('isOldUser')); //Tarayıcının yerel deposunda isOldUser key'ine ait bir value varsa getItem bu value'yu döner.
+    if(!isOldUser){
+      localStorage.setItem('isOldUser', 'true'); //Tarayıcıda isOldUSer yoksa bu isimde bir key oluştur değerini de true yap
+      return;
+    }
+  }
+;
 
   getProductFiltersFromRoute(){
     this.route.queryParams.subscribe((queryParams) => {

@@ -1,9 +1,14 @@
 <app-basic-layout>
-    <div class="d-flex flex-column justify-content-center align-items-center my-3">
+    <div *appIfNot="oldUser; else welcomeBack"
+    class="d-flex flex-column justify-content-center align-items-center my-3">
         <h1>Welcome!</h1>
         <small>Our products are fresh</small> 
         <!-- a href kullanımı yönlendirmede sayfaların yeniden yüklenmesini sağlar -->
 </div>
+<ng-template #welcomeBack>
+    <h1>Welcome Back!</h1>
+    <small>Out products are still fresh!</small>
+</ng-template>
 
 <div class="row">
     <aside class="col-3">

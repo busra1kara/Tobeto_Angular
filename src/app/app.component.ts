@@ -10,5 +10,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-
+  //App Component Import edilecek modülleri ve angular yapılarını belirtir. Burada kullanılan bileşenler tüm sayfalarda kullanılmaktadır.
 }

@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NewCategory } from '../../models/new-category';
 import { CategoriesService } from '../../services/categories.service';
+import { FormControlErrorMessagePipe } from '../../pipes/form-control-error-message.pipe';
 
 @Component({
   selector: 'app-new-category-form',
@@ -10,7 +11,8 @@ import { CategoriesService } from '../../services/categories.service';
   imports: [
     CommonModule,
     // FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormControlErrorMessagePipe
   ],
   templateUrl: './new-category-form.component.html',
   styleUrl: './new-category-form.component.scss',
@@ -69,9 +71,21 @@ export class NewCategoryFormComponent implements OnInit {
   onFormSubmit(){
     if(this.newCategoryFormGroup.invalid){
       console.error('Form is invalid');
+      this.newCategoryFormGroup.markAllAsTouched();
       return;
     };
 
     this.add();
   };
+
+  markAsTouched(controlName: string) {
+    const control = this.newCategoryFormGroup.get(controlName);
+    if (control) {
+      control.markAsTouched();
+    }
+  }
+
+  get description() {
+    return this.newCategoryFormGroup.get('description');
+  }
 }

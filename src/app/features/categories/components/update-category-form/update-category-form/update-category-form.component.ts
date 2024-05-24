@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoriesService } from '../../../services/categories.service';
-import { CategoryListItem } from '../../../models/category-list-item';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UpdatedCategory } from '../../../models/updated-category';
 
@@ -17,7 +16,7 @@ import { UpdatedCategory } from '../../../models/updated-category';
   styleUrl: './update-category-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UpdateCategoryFormComponent { 
+export class UpdateCategoryFormComponent implements OnInit { 
   updateCategoryFormGroup!: FormGroup;
   categoryId!: number;
   category!: any;

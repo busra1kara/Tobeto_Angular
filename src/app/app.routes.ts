@@ -3,6 +3,7 @@ import { HomePageComponent } from './routes/home-page/home-page.component';
 import { authRoutes } from './routes/auth/auth.routes';
 import { productsRoutes } from './routes/products/products.routes';
 import { categoriesRoutes } from './routes/categories/categories.routes';
+import { taskRoutes } from './routes/task/task.routes';
 
 export const routes: Routes = [
     {
@@ -15,5 +16,7 @@ export const routes: Routes = [
 
     ...productsRoutes,
 
-    ...categoriesRoutes
+    ...categoriesRoutes,
+
+    ...taskRoutes
 ];

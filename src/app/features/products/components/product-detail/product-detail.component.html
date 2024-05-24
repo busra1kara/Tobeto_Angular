@@ -4,11 +4,13 @@
             <img src="https://via.placeholder.com/500" [alt]="product.name" class="rounded img-fluid">
         </div>
         <div class="col">
-            <h2>{{product.name}}</h2>
+            <h2>{{product.name | uppercase}}</h2>
             <p><strong>Quantity per unit: </strong>{{product.quantityPerUnit}}</p>
             <p><strong>Units in stock: </strong>{{product.unitsInStock}}</p>
-            <p class="display-6">{{product.unitPrice | currency}}</p>
-            <button class="btn btn-primary" (click)="onAddToCard">Add to cart</button>
+            <p appHighlight="yellow" labelText="On Sale!" class="display-6">
+                {{product.unitPrice | appVat : 19 | currency}}
+            </p>
+            <button appButton class="btn btn-primary" (click)="onAddToCard">Add to cart</button>
         </div>
     </div>
 }@else {

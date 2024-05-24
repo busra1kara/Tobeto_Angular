@@ -1,0 +1,7 @@
+<div>
+    <input (ngModel)="inputText" placeholder="Enter text to translate" (input)="translate()">
+    <select (ngModel)="selectedLang" (change)="onLangChange(selectedLang)">
+      <option *ngFor="let lang of languages" [value]="lang">{{ lang }}</option>
+    </select>
+    <p *ngIf="translatedText$ | async as translatedText">{{ translatedText | appTranslate : selectedLang }}</p>
+  </div>

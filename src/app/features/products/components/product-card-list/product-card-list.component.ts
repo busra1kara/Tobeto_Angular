@@ -4,6 +4,7 @@ import { ProductListItem } from '../../models/product-list-item';
 import { CardComponent } from '../../../../shared/components/card/card.component';
 import { ProductsService } from '../../../../routes/products/services/products.service';
 import { take } from 'rxjs';
+import { VatPipe } from '../../pipes/vat.pipe';
 
 @Component({
   selector: 'app-product-card-list',
@@ -11,6 +12,7 @@ import { take } from 'rxjs';
   imports: [
     CommonModule,
     CardComponent,
+    VatPipe
   ],
   templateUrl: './product-card-list.component.html',
   styleUrl: './product-card-list.component.scss',

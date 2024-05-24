@@ -7,8 +7,8 @@
 <div class="row">
     @for(product of filteredProductList; track $index){
         <app-card 
-            [title]="product.name" 
-            [buttonLabel]="'Add to card - ' + (product.unitPrice | currency)"
+            [title]="product.name | uppercase" 
+            [buttonLabel]="'Add to card - ' + (product.unitPrice | appVat : 19 | currency)"
             (buttonClick)="onViewProduct(product)"
             imageSrc='https://via.placeholder.com/200'
             [description]="product.quantityPerUnit"

@@ -1,16 +1,16 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CategoriesService } from '../../../features/categories/services/categories.service';
 import { CategoryListItem } from '../../../features/categories/models/category-list-item';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { BasicLayoutComponent } from '../../../shared/components/basic-layout/basic-layout.component';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-category-table-page',
   standalone: true,
   imports: [
-    CommonModule,
-    BasicLayoutComponent,
+    // CommonModule,
+    // BasicLayoutComponent,
+    SharedModule,
     RouterModule
   ],
   templateUrl: './category-table-page.component.html',
