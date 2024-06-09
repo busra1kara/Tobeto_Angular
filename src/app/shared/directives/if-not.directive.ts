@@ -7,7 +7,7 @@ import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 export class IfNotDirective {
   private _hasView: boolean = false;
 
-  @Input() set appIfNot(condition: boolean){  //Input gelen veriyi alırken set ile kullanılması bu veri üzerinde işlem yapmayı sağlar. Gelen verinin değişmesi gereken durumlarında kullanılır
+  @Input() set appIfNot(condition: boolean){  //Input'un gelen veriyi alırken set ile kullanılması bu veri üzerinde işlem yapmayı sağlar. Gelen verinin değişmesi gereken durumlarda kullanılır
 
     if(!condition === this._hasView) return;
     if(!condition === true) this.createView();

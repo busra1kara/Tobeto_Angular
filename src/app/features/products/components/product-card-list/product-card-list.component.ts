@@ -1,10 +1,23 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { 
+  ChangeDetectionStrategy, 
+  ChangeDetectorRef, 
+  Component, 
+  EventEmitter,
+  Inject, 
+  Input, 
+  OnChanges,
+  OnDestroy, 
+  OnInit, 
+  Output, 
+  SimpleChanges } from '@angular/core';
 import { ProductListItem } from '../../models/product-list-item';
 import { CardComponent } from '../../../../shared/components/card/card.component';
-import { ProductsService } from '../../../../routes/products/services/products.service';
+import { ProductsService } from '../../services/products.service';
 import { take } from 'rxjs';
 import { VatPipe } from '../../pipes/vat.pipe';
+import { PaginationComponent } from '../../../../shared/components/pagination/pagination/pagination.component';
+import { PaginatedList } from '../../../../core/models/paginated-list';
 
 @Component({
   selector: 'app-product-card-list',
@@ -12,23 +25,38 @@ import { VatPipe } from '../../pipes/vat.pipe';
   imports: [
     CommonModule,
     CardComponent,
-    VatPipe
+    VatPipe,
+    PaginationComponent,
   ],
   templateUrl: './product-card-list.component.html',
   styleUrl: './product-card-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductCardListComponent implements OnInit {
+export class ProductCardListComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() filterByCategoryId: number | null = null;
   @Output() viewProduct = new EventEmitter<ProductListItem>();
 
-  productList!: ProductListItem [];
+  productList?: PaginatedList<ProductListItem>;
+  // page: number = 1;
+  readonly pageSize: number = 12;
 
-  constructor(private productService: ProductsService, private change: ChangeDetectorRef){};
+  constructor(private productService: ProductsService, private change: ChangeDetectorRef,
+    @Inject(DOCUMENT) private document: Document
+  ){};
 
   ngOnInit(): void {
     this.getProductList();
+    this.document.addEventListener('scroll', () => this.onScroll());
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['filterByCategoryId'] && changes['filterByCategoryId'].currentValue !== changes['filterByCategoryId'].previousValue)
+      this.getProductList(1, true);
+  }
+
+  ngOnDestroy(): void {
+    this.document.removeEventListener('scroll', () => {});
   }
 
   // getProductList() {
@@ -37,26 +65,46 @@ export class ProductCardListComponent implements OnInit {
   //   }).unsubscribe();
   // } Bu şekilde cevap henüz gelmeden unsubscribe olduğu için görüntülemede sorun olacaktır
 
-  getProductList() {
-    this.productService.getList()
+  getProductList(page: number = 1, startBegin: boolean = false) {
+    this.productService.getList(page, this.pageSize, {
+      categoryId: this.filterByCategoryId || undefined,
+    })
     .pipe(take(1))
     .subscribe((productList) => {
-      this.productList = productList;
+      if(!this.productList || startBegin) this.productList = productList;
+      else{
+          this.productList!.items.push(...productList.items);
+          this.productList!.pageIndex = productList.pageIndex;
+          this.productList!.totalItems = productList.totalItems;
+      }
       this.change.markForCheck();
     });
   }
 
-  get filteredProductList(): ProductListItem[] {
-    let filteredProductList = this.productList;
+  onPageChange(newPage: number){
+    this.getProductList(newPage)
+  }
 
-    if(this.filterByCategoryId){
-      filteredProductList = this.productList.filter(product => product.categoryId === this.filterByCategoryId)
-    }
+  // get filteredProductList(): ProductListItem[] {
+  //   let filteredProductList = this.productList;
 
-    return filteredProductList;
-  };
+  //   if(this.filterByCategoryId){
+  //     filteredProductList = this.productList.filter(product => product.categoryId === this.filterByCategoryId)
+  //   }
+
+  //   return filteredProductList;
+  // };
 
   onViewProduct(product: ProductListItem) {
     this.viewProduct.emit(product);
-  } 
+  }
+
+  private onScroll() {
+    if (
+      this.productList &&
+      window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+      this.productList.pageIndex * this.pageSize < this.productList.totalItems
+    )
+      this.getProductList(this.productList.pageIndex + 1);
+  }
 }

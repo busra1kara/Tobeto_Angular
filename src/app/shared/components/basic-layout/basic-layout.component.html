@@ -1,10 +1,12 @@
-<div class="d-flex flex-column min-vh-100">
+<div class="d-flex flex-column min-vh-100 nw-container">
+    <div>BasicLayoutComponent: {{ now }}</div>
     <header>
         <app-navbar></app-navbar>
     </header>
 
     <main class="container flex-grow-1 py-3">
         <ng-content></ng-content>
+        <router-outlet></router-outlet>
     </main>
 
     <footer>

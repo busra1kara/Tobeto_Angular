@@ -6,7 +6,7 @@
 
 <app-list-group 
     [items]="CategoryListGroupItems"
-    [selectedItemId]="initialSelectedCategoryId?.toString() ?? null"
+    [selectedItemId]="selectedCategoryId?.toString() ?? null"
     (changeSelect)="onChangeSelectEvent($event)">
     <!-- $event => output'un verdiği değeri referans eder -->
 </app-list-group>

@@ -1,25 +1,26 @@
-<app-basic-layout>
-    <div *appIfNot="oldUser; else welcomeBack"
-    class="d-flex flex-column justify-content-center align-items-center my-3">
+<div class="nw-container">
+    <div>HomePageComponent: {{ now }}</div>
+    <div
+        *appIfNot="oldUser; else welcomeBack"
+        class="d-flex flex-column justify-content-center align-items-center my-3"
+      >
         <h1>Welcome!</h1>
-        <small>Our products are fresh</small> 
-        <!-- a href kullanımı yönlendirmede sayfaların yeniden yüklenmesini sağlar -->
+        <small>Out products are fresh!</small>
+    </div>
+    <ng-template #welcomeBack>
+        <h1>Welcome back!</h1>
+        <small>Out products are still fresh!</small>
+    </ng-template>
+
+    <div class="row">
+        <aside class="col-3">
+            <h3>Categories</h3>
+            <app-category-list-group [selectedCategoryId]="selectedCategoryId" (changeSelect)="onChangeCategorySelect($event)"></app-category-list-group>
+        </aside>
+
+        <section class="col">
+            <h1 style="font-size: 1.5rem">Products</h1>
+            <app-product-card-list [filterByCategoryId]="selectedCategoryId" (viewProduct)="onViewProduct($event)"></app-product-card-list>
+        </section>
+    </div>
 </div>
-<ng-template #welcomeBack>
-    <h1>Welcome Back!</h1>
-    <small>Out products are still fresh!</small>
-</ng-template>
-
-<div class="row">
-    <aside class="col-3">
-        <h3>Categories</h3>
-        <app-category-list-group [initialSelectedCategoryId]="selectedCategoryId" (changeSelect)="onChangeCategorySelect($event)"></app-category-list-group>
-    </aside>
-
-    <section class="col">
-        <h3>Products</h3>
-        <app-product-card-list [filterByCategoryId]="selectedCategoryId" (viewProduct)="onViewProduct($event)"></app-product-card-list>
-    </section>
-</div>
-
-</app-basic-layout>

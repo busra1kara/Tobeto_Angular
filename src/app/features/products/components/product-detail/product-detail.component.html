@@ -1,7 +1,7 @@
 @if(product){
     <div class="row">
         <div class="col">
-            <img src="https://via.placeholder.com/500" [alt]="product.name" class="rounded img-fluid">
+            <img [src]="product.imageUrl" [alt]="product.name" class="rounded img-fluid">
         </div>
         <div class="col">
             <h2>{{product.name | uppercase}}</h2>

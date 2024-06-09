@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { ProductsService } from '../../../../routes/products/services/products.service';
+import { ProductsService } from '../../services/products.service';
 import { ProductDetail } from '../../models/product-detail';
 import { PlaceholderComponent } from '../../../../shared/components/placeholder/placeholder.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
