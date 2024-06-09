@@ -44,7 +44,7 @@ export class HomePageComponent implements OnInit {
   }
   
   detectOldUser() {
-    const isOldUser = this.localStorageService.get<boolean>('isOldUser')); //Tarayıcının yerel deposunda isOldUser key'ine ait bir value varsa getItem bu value'yu döner.
+    const isOldUser = this.localStorageService.get<boolean>('isOldUser'); //Tarayıcının yerel deposunda isOldUser key'ine ait bir value varsa getItem bu value'yu döner.
     if(!isOldUser){
       this.localStorageService.set('isOldUser', 'true'); //Tarayıcıda isOldUSer yoksa bu isimde bir key oluştur değerini de true yap
       return;

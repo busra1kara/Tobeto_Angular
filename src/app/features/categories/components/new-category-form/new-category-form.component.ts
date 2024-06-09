@@ -4,6 +4,8 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { NewCategory } from '../../models/new-category';
 import { CategoriesService } from '../../services/categories.service';
 import { FormControlErrorMessagePipe } from '../../pipes/form-control-error-message.pipe';
+import { CanComponentDeactivate } from '../../../../core/guards/dirty.guard';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-new-category-form',
@@ -18,7 +20,7 @@ import { FormControlErrorMessagePipe } from '../../pipes/form-control-error-mess
   styleUrl: './new-category-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewCategoryFormComponent implements OnInit { 
+export class NewCategoryFormComponent implements OnInit, CanComponentDeactivate { 
   // nameInput: string = '';
   // descriptionInput: string = ''
 
@@ -87,5 +89,13 @@ export class NewCategoryFormComponent implements OnInit {
 
   get description() {
     return this.newCategoryFormGroup.get('description');
+  }
+
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean{
+    console.log('canDeactivate called');
+    if(this.newCategoryFormGroup.dirty){
+      return confirm('Değişiklikler kaydedilmedi. Çıkmak istediğinize emin misiniz?');
+    }
+    return true;
   }
 }

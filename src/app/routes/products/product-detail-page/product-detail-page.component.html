@@ -1,4 +1,7 @@
-
-<h1>Product Details</h1>
-<app-product-detail [id]="productId"></app-product-detail>
-
+<div *ngIf="productDetails; else loading">
+    <h1>Product Details</h1>
+    <app-product-detail [id]="productId"></app-product-detail>
+</div>
+<ng-template #loading>
+    <p>Loading...</p>
+</ng-template>
